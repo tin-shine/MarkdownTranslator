@@ -9,6 +9,12 @@ public class Code implements HtmlElem {
         return ret.toString();
     }
 
+    @Override
+    public String preProcess(String line) {
+        Item.nextItem = false;
+        return line;
+    }
+
 	public int lineCount(String[] inputString, int i) {
         while (++i < inputString.length) {
             if (inputString[i].startsWith("```")) {

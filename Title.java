@@ -14,4 +14,11 @@ public class Title implements HtmlElem {
 		return ret.append("</h" + level + ">").toString();
 	}
 
+    @Override
+    public String preProcess(String line) {
+        ItemList.itemNum = 1;
+        Item.nextItem = false;
+        return new InlineCode().toHtml(line);
+    }
+
 }

@@ -11,19 +11,36 @@ public class Compiler {
             if (line == null || line.length() == 0) continue;
             switch (ElemType.checkType(line)) {
                 case ElemType.TITLE:
-                    Item.itemNum = 1;
-                    ret.append(transformByLine(new Title(), line) + "\n");
+                    HtmlElem title = new Title();
+                    line = title.preProcess(line);
+                    ret.append(transformByLine(title, line) + "\n");
                     break;
-                case ElemType.ITEM:
-                    ret.append(transformByLine(new Item(), line) + "\n");
+                case ElemType.ITEM_LIST:
+                    HtmlElem itemList = new ItemList();
+                    line = itemList.preProcess(line);
+                    ret.append(transformByLine(itemList, line) + "\n");
                     break;
                 case ElemType.CODE:
                     Code segment = new Code();
+                    line = segment.preProcess(line);
                     String codeSegment = segment.codeSegment(inputString, i);
                     ret.append(transformByLine(segment, codeSegment) + "\n");
                     i = segment.lineCount(inputString, i);
                     break;
+                case ElemType.IMAGE:
+                    HtmlElem image = new Image();
+                    line = image.preProcess(line);
+                    ret.append(transformByLine(image, line) + "\n");
+                    break;
+                case ElemType.ITEM:
+                    HtmlElem item = new Item();
+                    line = item.preProcess(line);
+                    ret.append(transformByLine(item, line) + "\n");
+                    break;
                 default:
+                    Item.nextItem = false;
+                    line = new InlineCode().toHtml(line);
+                    ret.append("<p>").append(line).append("</p>");
                     break;
             }
         }
