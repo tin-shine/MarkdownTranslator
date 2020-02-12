@@ -1,0 +1,29 @@
+<h1>构建MenuOS系统</h1>
+<ol start="1"><li>将指定文件拷贝到本地�?</li></ol>
+<code><pre>git clone https://github.com/mengning/linuxnet.git
+</pre></code>
+<ol start="2"><li>进入目录``linuxnet``，使用``make``命令编译根文件系统：</li></ol>
+<code><pre>cd linuxnet
+make rootfs
+</pre></code>
+<ol start="3"><li>在``Makefile``文件中有�?条指令用于开启menu系统（不�?要自己输入）�?</li></ol>
+<code><pre>qmenu -kernel ../../linux-3.18.6/arch/x86/bzImage -initrd ../rootfs.img
+</pre></code>
+<h1>测试QEMU</h1>
+<ol start="1"><li>在QEMU中完成TCP客户端和服务器发送和接收hello/hi以验证MenuOS正常工作�?</li></ol>
+<code><pre>MenuOS>> replyhi
+# Please input hello...
+MenuOS>> hello
+</pre></code>
+<ol start="2"><li>修改Makefile内容，``rootfs``标签下启动QEMU的命令尾部添加``-s``</li></ol>
+<ol start="3"><li>重新``make rootfs``，启动QEMU</li></ol>
+<ol start="4"><li>启动调试，连接到server</li></ol>
+<code><pre>gdb
+(gdb) file ../../linux-3.18.6/vmlinux
+(gdb) target remote:1234    # 连接到gdbserver
+</pre></code>
+<ol start="5"><li>设置断点，验证gdb对``start_kernel``和``sys_socketcall``这两个内核函数的跟踪是否可行</li></ol>
+<code><pre>(gdb) break start_kernel
+(gdb) break sys_socketcall
+</pre></code>
+
