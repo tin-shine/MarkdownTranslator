@@ -1,4 +1,4 @@
-
+package com.tinshine.MarkdownTranslator;
 
 public class Code implements HtmlElem {
 
@@ -11,7 +11,6 @@ public class Code implements HtmlElem {
 
     @Override
     public String preProcess(String line) {
-        Item.nextItem = false;
         return line;
     }
 

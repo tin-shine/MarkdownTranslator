@@ -1,3 +1,5 @@
+package com.tinshine.MarkdownTranslator;
+
 public class ElemType {
     static final int INVALID_TYPE = -1;
     static final int TITLE = 0;
@@ -57,7 +59,7 @@ public class ElemType {
     
     public boolean isItemList(String line) {
         int cnt = 0;
-        while (line.charAt(cnt) >= '1' && line.charAt(cnt) <= '9') cnt++;
+        while (cnt < line.length() && line.charAt(cnt) >= '1' && line.charAt(cnt) <= '9') cnt++;
         if (cnt != 0 && cnt <= line.length() - 2 && 
             line.charAt(cnt) == '.' && line.charAt(cnt + 1) == ' ') {
                 return true;

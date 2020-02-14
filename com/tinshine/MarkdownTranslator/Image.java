@@ -1,4 +1,4 @@
-
+package com.tinshine.MarkdownTranslator;
 
 public class Image implements HtmlElem {
 
@@ -18,7 +18,6 @@ public class Image implements HtmlElem {
 
     @Override
     public String preProcess(String line) {
-        Item.nextItem = false;
         return new InlineCode().toHtml(line);
     }
 

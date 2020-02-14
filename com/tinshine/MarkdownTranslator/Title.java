@@ -1,4 +1,4 @@
-
+package com.tinshine.MarkdownTranslator;
 
 public class Title implements HtmlElem {
 
@@ -17,8 +17,8 @@ public class Title implements HtmlElem {
     @Override
     public String preProcess(String line) {
         ItemList.itemNum = 1;
-        Item.nextItem = false;
-        return new InlineCode().toHtml(line);
+        line = new InlineCode().toHtml(line);
+        return new Link().toHtml(line);
     }
 
 }

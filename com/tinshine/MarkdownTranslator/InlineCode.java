@@ -1,4 +1,4 @@
-
+package com.tinshine.MarkdownTranslator;
 
 public class InlineCode implements HtmlElem {
 

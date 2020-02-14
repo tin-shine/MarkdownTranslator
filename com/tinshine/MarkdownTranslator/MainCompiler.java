@@ -1,13 +1,17 @@
-import java.io.*;
+package com.tinshine.MarkdownTranslator;
+
+// import java.io.*;
 /**
  * Compiler
  */
-public class Compiler {
+public class MainCompiler {
 
-    public String transform(String[] inputString) throws IOException {
+    public String transform(String inputText) {
+        inputText = inputText.replace("\r\n", "\n");
+        String[] lines = inputText.split("\n");
         StringBuilder ret = new StringBuilder();
-        for (int i = 0; i < inputString.length; i++) {
-            String line = inputString[i];
+        for (int i = 0; i < lines.length; i++) {
+            String line = lines[i];
             if (line == null || line.length() == 0) continue;
             switch (ElemType.checkType(line)) {
                 case ElemType.TITLE:
@@ -23,9 +27,9 @@ public class Compiler {
                 case ElemType.CODE:
                     Code segment = new Code();
                     line = segment.preProcess(line);
-                    String codeSegment = segment.codeSegment(inputString, i);
+                    String codeSegment = segment.codeSegment(lines, i);
                     ret.append(transformByLine(segment, codeSegment) + "\n");
-                    i = segment.lineCount(inputString, i);
+                    i = segment.lineCount(lines, i);
                     break;
                 case ElemType.IMAGE:
                     HtmlElem image = new Image();
@@ -38,34 +42,16 @@ public class Compiler {
                     ret.append(transformByLine(item, line) + "\n");
                     break;
                 default:
-                    Item.nextItem = false;
-                    line = new InlineCode().toHtml(line);
-                    ret.append("<p>").append(line).append("</p>");
+                    HtmlElem defaultElem = new Default();
+                    line = defaultElem.preProcess(line);
+                    ret.append(transformByLine(defaultElem, line));
                     break;
             }
         }
         return ret.toString();
     }
 
-	private String transformByLine(HtmlElem htmlElem, String line) {
+    private String transformByLine(HtmlElem htmlElem, String line) {
         return htmlElem.toHtml(line);
     }
-
-    public static String[] readString(String inputFile) throws IOException {
-		FileInputStream inputStream = new FileInputStream(new File(inputFile));
-        BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream));
-        StringBuilder inputText = new StringBuilder();
-        String line = null;
-        while ((line = bf.readLine()) != null) {
-            inputText.append(line + "\n");
-        }
-        bf.close();
-        return inputText.toString().split("\n");
-	}
-
-	public static void writeString(String outputFile, String outputText) throws IOException {
-        PrintWriter pw = new PrintWriter(new File(outputFile));
-        pw.println(outputText);
-        pw.close();
-	}
 }

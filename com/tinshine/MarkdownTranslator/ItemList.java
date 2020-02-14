@@ -1,3 +1,5 @@
+package com.tinshine.MarkdownTranslator;
+
 public class ItemList implements HtmlElem {
 
 	public static int itemNum = 1;
@@ -16,8 +18,8 @@ public class ItemList implements HtmlElem {
 
     @Override
     public String preProcess(String line) {
-        Item.nextItem = false;
-        return new InlineCode().toHtml(line);
+        line = new InlineCode().toHtml(line);
+        return new Link().toHtml(line);
     }
 
 }
